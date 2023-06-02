@@ -78,9 +78,9 @@ ranwtdttt <- function(t, id, start, end, nsamp=1, reverse=T) {
 
 ## wtdttt rx1time, disttype(lnorm) start(1jan2014) end(31dec2014)
 
-#library(haven)
+# library(haven)
 #
-#x <- read_dta("ref/wtddat_dates.dta")
+# x <- read_dta("ref/wtddat_dates.dta")
 #
 # x.w <- wtdttt(x$rx1time, as.Date('2014-01-01'), as.Date('2014-12-31'),
 #	reverse=F)
