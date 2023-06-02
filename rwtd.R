@@ -1,23 +1,29 @@
+# R translation of the Stata wtdttt package
+# https://github.com/mbg-unsw/Rwtd
+#
+# (c) 2023 Malcolm Gillies <malcolm.gillies@unsw.edu.au>
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or (at your
+# option) any later version.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>. 
+
+# This code is a direct translation of portions from the Stata module
+# wtdttt, available at:
+# https://econpapers.repec.org/software/bocbocode/s458265.htm
+# by Katrine Bødkergaard Nielsen (kani@ph.au.dk) and
+#    Henrik Stovring (stovring@ph.au.dk) 
+
 library(data.table)
 library(bbmle)
-
-#library(haven)
-#x <- read_dta("ref/wtddat_dates.dta")
-
-#program define mlwtdttt_lnorm
-#        version 14.0
-#	args lnf logitp mu lnsigma 
-#
-#qui{
-#        replace `lnf' = ln(invlogit(`logitp') *                   /*
-#                        */ normal(-(ln($ML_y1) - `mu')/exp(`lnsigma')) /*
-#                        */ / exp(`mu' + exp(2 * `lnsigma')/2)  /*
-#                        */ + invlogit(-`logitp') / $wtddelta )
-#      }
-#end
-
-
-# wtdttt rx1time, disttype(lnorm) start(1jan2014) end(31dec2014)
 
 # first try lnorm, discrete time version only
 
@@ -40,21 +46,9 @@ wtdttt <- function(t, start, end, reverse) {
     lnsinit <- log(sd(log(obstime[obstime < 0.5 * delta])))
 
     mllnorm <- function(mu, lnsigma, logitp) {
-#	message('mu=', mu, '; lnsigma=', lnsigma, '; logitp=', logitp)
 	-sum(log(plogis(logitp) * pnorm(-(log(obstime) - mu)/exp(lnsigma)) /
 	    exp(mu + exp(2*lnsigma)/2) + plogis(-logitp) / delta))
     }
-
-#        replace `lnf' = ln(invlogit(`logitp') *                   /*
-#                        */ normal(-(ln($ML_y1) - `mu')/exp(`lnsigma')) /*
-#                        */ / exp(`mu' + exp(2 * `lnsigma')/2)  /*
-#                        */ + invlogit(-`logitp') / $wtddelta )
-#      }
-
-#        (logitp: `obstime' = `logitpcovar' `allcovar') ///
-#        (mu: `mucovar' `allcovar') ///
-#        (lnsigma: `lnsigmacovar' `allcovar') `if' `in', iterate(`niter') ///
-# niter=50
 
     mle2(mllnorm,start=list(mu=muinit,lnsigma=lnsinit,logitp=lpinit))
 }
@@ -82,15 +76,21 @@ ranwtdttt <- function(t, id, start, end, nsamp=1, reverse=T) {
     wtdttt(st, start, end, reverse)
 }
 
+## wtdttt rx1time, disttype(lnorm) start(1jan2014) end(31dec2014)
+
+#library(haven)
+#
+#x <- read_dta("ref/wtddat_dates.dta")
+#
 # x.w <- wtdttt(x$rx1time, as.Date('2014-01-01'), as.Date('2014-12-31'),
-#     reverse=F)
+#	reverse=F)
 # 
 # summary(x.w)
 # 
 # x <- read_dta("ref/ranwtddat_discdates.dta")
 # 
-# x.w <- ranwtdttt(x$rxdate, x$pid, as.Date('2014-01-01'), as.Date('2014-12-31'),
-#     reverse=F)
+# x.w <- ranwtdttt(x$rxdate, x$pid, as.Date('2014-01-01'),
+#	as.Date('2014-12-31'), reverse=F)
 # 
 # summary(x.w)
 # 
