@@ -7,7 +7,12 @@ This code is a direct translation of portions from the Stata module
 wtdttt, available at:
 https://econpapers.repec.org/software/bocbocode/s458265.htm
 by Katrine Bødkergaard Nielsen (kani@ph.au.dk) and
-   Henrik Stovring (stovring@ph.au.dk) 
+   Henrik Støvring (stovring@ph.au.dk) 
+
+These functions estimate parameters of the ordinary and reverse Waiting Time
+Distribution (WTD) by maximum likelihood, with application to modelling the
+recurrence of drug dispensing. Please see the Stata package documentation
+for references.
 
 As with wtdttt, this code is made available under the terms of the GPL v3 (or later).
 
