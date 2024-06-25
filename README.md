@@ -1,4 +1,6 @@
 # Rwtd
+**n.b. this code has been superseded by the [Rwtdttt](https://github.com/mbg-unsw/Rwtdttt) package**
+
 Rough R translation of functions from the Stata wtdttt package
 
 (c) 2023 Malcolm Gillies <malcolm.gillies@unsw.edu.au>
